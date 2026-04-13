@@ -82,3 +82,7 @@ Use these as inspiration for your tone and style, but respond naturally to what 
     reply = response.content[0].text
 
     return {"reply": reply, "retrieved_lines": retrieved_lines}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)
