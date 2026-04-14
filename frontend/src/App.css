@@ -15,6 +15,7 @@ body {
   min-height: 100vh;
   position: relative;
   background: linear-gradient(180deg, #FDF6E3 0%, #F5ECC8 100%);
+  overflow: hidden;
 }
 
 .landing-bg {
@@ -44,6 +45,54 @@ body {
   50%      { opacity: 1.0; }
 }
 
+/* ── FLOATING QUOTES ──────────────────────────────────── */
+.floating-quotes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-quote {
+  position: absolute;
+  white-space: nowrap;
+  left: 105%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: floatQuote linear infinite;
+  opacity: 0;
+}
+
+.fq-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #3D2A00;
+  opacity: 0.5;
+}
+
+.fq-char {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.65rem;
+  color: #8A7050;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@keyframes floatQuote {
+  0%   { transform: translateX(0);        opacity: 0; }
+  4%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(-125vw);   opacity: 0; }
+}
+
+/* ── HEADER ───────────────────────────────────────────── */
 .landing-header {
   position: relative;
   z-index: 2;
@@ -84,7 +133,7 @@ body {
   font-weight: 300;
 }
 
-/* Character grid */
+/* ── CHARACTER GRID ───────────────────────────────────── */
 .character-grid {
   position: relative;
   z-index: 2;
@@ -94,6 +143,8 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 60px;
+  /* align all cards to same height */
+  align-items: stretch;
 }
 
 .char-card {
@@ -104,6 +155,9 @@ body {
   border: 1.5px solid var(--border);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
   animation: cardIn 0.55s ease both;
+  /* flex column so body fills remaining space */
+  display: flex;
+  flex-direction: column;
 }
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -119,6 +173,7 @@ body {
   width: 100%;
   aspect-ratio: 3/4;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .char-photo {
   width: 100%;
@@ -141,7 +196,6 @@ body {
   );
 }
 
-/* "Continue chat" badge on cards with history */
 .char-history-badge {
   position: absolute;
   top: 10px;
@@ -157,7 +211,13 @@ body {
   border-radius: 20px;
 }
 
-.char-card-body { padding: 10px 10px 14px; }
+/* card body uses flex to push button to bottom */
+.char-card-body {
+  padding: 10px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 
 .char-card-name {
   font-family: 'Playfair Display', serif;
@@ -173,7 +233,9 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
-  margin-bottom: 10px;
+  /* flex-grow pushes button to bottom regardless of tagline length */
+  flex: 1;
+  padding-top: 2px;
 }
 
 .char-card-btn {
@@ -189,6 +251,7 @@ body {
   font-family: 'Lato', sans-serif;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   letter-spacing: 0.02em;
+  margin-top: 10px;
 }
 .char-card--hovered .char-card-btn {
   background: var(--mid);
@@ -363,7 +426,7 @@ body {
   background: var(--light);
 }
 
-/* Central Perk watermark — properly centered in chat area */
+/* Central Perk watermark */
 .cp-watermark {
   position: absolute;
   left: 50%;
@@ -379,7 +442,7 @@ body {
 .steam-2 { animation: steam 3.0s ease-in-out infinite 0.5s; }
 .steam-3 { animation: steam 2.8s ease-in-out infinite 1.0s; }
 @keyframes steam {
-  0%, 100% { transform: translateY(0);    opacity: 1; }
+  0%, 100% { transform: translateY(0);     opacity: 1; }
   50%       { transform: translateY(-22px); opacity: 0; }
 }
 
@@ -489,7 +552,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  /* Fixed: max 65% of chat area width */
   max-width: 65%;
 }
 .msg-row--user .msg-col { align-items: flex-end; }
@@ -510,7 +572,6 @@ body {
   line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-word;
-  /* Bubbles only as wide as their content, up to col max */
   display: inline-block;
   max-width: 100%;
 }

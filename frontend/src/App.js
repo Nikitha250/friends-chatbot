@@ -95,6 +95,21 @@ const CHARACTERS = [
   },
 ];
 
+const FLOATING_QUOTES = [
+  { text: "We were on a break!", char: "Ross" },
+  { text: "Could this BE any more awkward?", char: "Chandler" },
+  { text: "How you doin'?", char: "Joey" },
+  { text: "I know!", char: "Monica" },
+  { text: "He's her lobster.", char: "Phoebe" },
+  { text: "Welcome to the real world. It sucks.", char: "Rachel" },
+  { text: "Joey doesn't share food!", char: "Joey" },
+  { text: "Smelly cat, smelly cat...", char: "Phoebe" },
+  { text: "Could I BE wearing any more clothes?", char: "Chandler" },
+  { text: "My sandwich! MY SANDWICH!", char: "Ross" },
+  { text: "Seven! Seven! Seven!", char: "Monica" },
+  { text: "Oh. My. God.", char: "Janice" },
+];
+
 // ── LANDING ──────────────────────────────────────────────
 function Landing({ onSelect, histories }) {
   const [hovered, setHovered] = useState(null);
@@ -181,6 +196,24 @@ function Landing({ onSelect, histories }) {
         <rect x="0" y="80" width="900" height="100" fill="url(#skyFade)" />
       </svg>
 
+      {/* Floating quotes */}
+      <div className="floating-quotes">
+        {FLOATING_QUOTES.map((q, i) => (
+          <div
+            key={i}
+            className="floating-quote"
+            style={{
+              animationDelay: `${i * 3.5}s`,
+              animationDuration: `${22 + (i % 4) * 4}s`,
+              bottom: `${12 + (i % 3) * 18}%`,
+            }}
+          >
+            <span className="fq-text">"{q.text}"</span>
+            <span className="fq-char">— {q.char}</span>
+          </div>
+        ))}
+      </div>
+
       <header className="landing-header">
         <div className="cp-badge"><span>New York City · Est. 1994</span></div>
         <h1 className="landing-title">friends</h1>
@@ -229,7 +262,7 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
- useEffect(() => {
+  useEffect(() => {
     setTimeout(() => setReady(true), 100);
     if (messages.length === 0) {
       setTimeout(() => {
@@ -414,10 +447,9 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
   );
 }
 
-// ── APP ROOT — history stored here, keyed by character id ─
+// ── APP ROOT ──────────────────────────────────────────────
 export default function App() {
   const [selected, setSelected] = useState(null);
-  // histories: { chandler: [...], monica: [...], ... }
   const [histories, setHistories] = useState(
     Object.fromEntries(CHARACTERS.map(c => [c.id, []]))
   );
