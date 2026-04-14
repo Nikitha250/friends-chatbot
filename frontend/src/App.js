@@ -229,14 +229,14 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
-  useEffect(() => {
+ useEffect(() => {
     setTimeout(() => setReady(true), 100);
-    // Only add greeting if this is a fresh conversation
     if (messages.length === 0) {
       setTimeout(() => {
         onMessages([{ role: "assistant", content: character.greeting }]);
       }, 500);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [character.id]);
 
   useEffect(() => {
