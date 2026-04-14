@@ -110,6 +110,38 @@ const FLOATING_QUOTES = [
   { text: "Oh. My. God.", char: "Janice" },
 ];
 
+// One quote at a time, cycling with fade in/out
+function FloatingQuote() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const showDuration = 3000;  // show for 3s
+    const fadeDuration = 800;   // fade takes 0.8s
+
+    const cycle = setInterval(() => {
+      // fade out
+      setVisible(false);
+      setTimeout(() => {
+        // change quote then fade in
+        setIndex(i => (i + 1) % FLOATING_QUOTES.length);
+        setVisible(true);
+      }, fadeDuration);
+    }, showDuration + fadeDuration);
+
+    return () => clearInterval(cycle);
+  }, []);
+
+  const q = FLOATING_QUOTES[index];
+
+  return (
+    <div className={`floating-quote-single ${visible ? "fq-visible" : "fq-hidden"}`}>
+      <span className="fq-text">"{q.text}"</span>
+      <span className="fq-char">— {q.char}</span>
+    </div>
+  );
+}
+
 // ── LANDING ──────────────────────────────────────────────
 function Landing({ onSelect, histories }) {
   const [hovered, setHovered] = useState(null);
@@ -196,24 +228,6 @@ function Landing({ onSelect, histories }) {
         <rect x="0" y="80" width="900" height="100" fill="url(#skyFade)" />
       </svg>
 
-      {/* Floating quotes */}
-      <div className="floating-quotes">
-        {FLOATING_QUOTES.map((q, i) => (
-          <div
-            key={i}
-            className="floating-quote"
-            style={{
-              animationDelay: `${i * 3.5}s`,
-              animationDuration: `${22 + (i % 4) * 4}s`,
-              bottom: `${12 + (i % 3) * 18}%`,
-            }}
-          >
-            <span className="fq-text">"{q.text}"</span>
-            <span className="fq-char">— {q.char}</span>
-          </div>
-        ))}
-      </div>
-
       <header className="landing-header">
         <div className="cp-badge"><span>New York City · Est. 1994</span></div>
         <h1 className="landing-title">friends</h1>
@@ -247,6 +261,10 @@ function Landing({ onSelect, histories }) {
             </div>
           );
         })}
+      </div>
+
+      <div className="quote-strip">
+        <FloatingQuote />
       </div>
 
       <footer className="landing-footer">ten seasons · six friends · one couch</footer>
@@ -314,7 +332,6 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
       className={`chat-page ${ready ? "chat-page--ready" : ""}`}
       style={{ "--mid": character.mid, "--light": character.light, "--light2": character.light2, "--dark": character.dark, "--border": character.border }}
     >
-      {/* Sidebar */}
       <div className="chat-sidebar">
         <div className="chat-sidebar-photo">
           <img src={character.photo} alt={character.name} className="chat-sidebar-img" />
@@ -344,9 +361,7 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
         </div>
       </div>
 
-      {/* Main chat */}
       <div className="chat-main">
-        {/* Central Perk watermark */}
         <svg className="cp-watermark" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid meet">
           <path d="M22 92 Q20 118 50 126 Q80 118 78 92Z" fill="#8B6A3A" />
           <ellipse cx="50" cy="92" rx="28" ry="9" fill="#A07840" />
@@ -373,7 +388,6 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
           <text x="170" y="157" textAnchor="middle" fontFamily="Georgia,serif" fontSize="26" fontWeight="900" stroke="#041E10" strokeWidth="6" strokeLinejoin="round" paintOrder="stroke" fill="#FFFFFF" letterSpacing="6">PERK</text>
         </svg>
 
-        {/* Header */}
         <div className="chat-header">
           <div className="chat-header-avatar">
             <img src={character.photo} alt={character.name} className="chat-header-img" />
@@ -385,7 +399,6 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
           </div>
         </div>
 
-        {/* Messages */}
         <div className="chat-messages">
           <div className="chat-session-tag">☕ You pulled up a chair at Central Perk</div>
           {messages.map((msg, i) => (
@@ -417,7 +430,6 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input */}
         <div className="chat-input-area">
           <div className="chat-input-box">
             <textarea
@@ -447,7 +459,6 @@ function ChatWindow({ character, messages, onMessages, onBack }) {
   );
 }
 
-// ── APP ROOT ──────────────────────────────────────────────
 export default function App() {
   const [selected, setSelected] = useState(null);
   const [histories, setHistories] = useState(

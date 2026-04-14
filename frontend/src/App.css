@@ -45,51 +45,44 @@ body {
   50%      { opacity: 1.0; }
 }
 
-/* ── FLOATING QUOTES ──────────────────────────────────── */
-.floating-quotes {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
+/* ── QUOTE STRIP ──────────────────────────────────────── */
+.quote-strip {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
-.floating-quote {
-  position: absolute;
-  white-space: nowrap;
-  left: 105%;
+.floating-quote-single {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  animation: floatQuote linear infinite;
-  opacity: 0;
+  align-items: center;
+  gap: 3px;
+  transition: opacity 0.8s ease;
 }
+
+.fq-visible { opacity: 1; }
+.fq-hidden  { opacity: 0; }
 
 .fq-text {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #3D2A00;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 .fq-char {
   font-family: 'Lato', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   color: #8A7050;
-  opacity: 0.6;
-  letter-spacing: 0.08em;
+  opacity: 0.65;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-@keyframes floatQuote {
-  0%   { transform: translateX(0);        opacity: 0; }
-  4%   { opacity: 1; }
-  92%  { opacity: 1; }
-  100% { transform: translateX(-125vw);   opacity: 0; }
 }
 
 /* ── HEADER ───────────────────────────────────────────── */
@@ -97,7 +90,7 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 44px 20px 28px;
+  padding: 44px 20px 20px;
 }
 
 .cp-badge {
@@ -142,8 +135,7 @@ body {
   gap: 12px;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 24px 60px;
-  /* align all cards to same height */
+  padding: 0 24px 40px;
   align-items: stretch;
 }
 
@@ -155,7 +147,6 @@ body {
   border: 1.5px solid var(--border);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
   animation: cardIn 0.55s ease both;
-  /* flex column so body fills remaining space */
   display: flex;
   flex-direction: column;
 }
@@ -211,7 +202,6 @@ body {
   border-radius: 20px;
 }
 
-/* card body uses flex to push button to bottom */
 .char-card-body {
   padding: 10px 10px 14px;
   display: flex;
@@ -233,7 +223,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
-  /* flex-grow pushes button to bottom regardless of tagline length */
   flex: 1;
   padding-top: 2px;
 }
@@ -263,7 +252,7 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 16px 20px 24px;
+  padding: 12px 20px 20px;
   color: #8A7A50;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
@@ -282,7 +271,6 @@ body {
 }
 .chat-page--ready { opacity: 1; }
 
-/* Sidebar */
 .chat-sidebar {
   width: 270px;
   flex-shrink: 0;
@@ -416,7 +404,6 @@ body {
 }
 .chat-back-btn:hover { background: var(--mid); color: #fff; border-color: var(--mid); }
 
-/* Main chat area */
 .chat-main {
   flex: 1;
   display: flex;
@@ -426,7 +413,6 @@ body {
   background: var(--light);
 }
 
-/* Central Perk watermark */
 .cp-watermark {
   position: absolute;
   left: 50%;
@@ -446,7 +432,6 @@ body {
   50%       { transform: translateY(-22px); opacity: 0; }
 }
 
-/* Chat header */
 .chat-header {
   display: flex;
   align-items: center;
@@ -494,7 +479,6 @@ body {
   margin-top: 1px;
 }
 
-/* Messages */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -587,7 +571,6 @@ body {
   border-bottom-right-radius: 4px;
 }
 
-/* Typing dots */
 .msg-typing {
   display: flex;
   align-items: center;
@@ -608,7 +591,6 @@ body {
   30%            { opacity: 1;   transform: scale(1.2); }
 }
 
-/* Input bar */
 .chat-input-area {
   padding: 12px 20px 16px;
   border-top: 1.5px solid var(--border);
